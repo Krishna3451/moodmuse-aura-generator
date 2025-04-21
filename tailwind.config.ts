@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -17,8 +18,6 @@ export default {
 			xl: "1280px",
 			"2xl": "1536px",
 		},
-	prefix: "",
-	theme: {
 		container: {
 			center: true,
 			padding: '2rem',
