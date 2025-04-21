@@ -1,73 +1,108 @@
-# Welcome to your Lovable project
+# MoodMuse - AI-Powered Mood Recommendations
 
-## Project info
+MoodMuse is a mood-based recommendation application that provides personalized quotes, affirmations, and song recommendations tailored to your current emotional state. Powered by Google's Gemini AI, it delivers fresh and relevant content with every use.
 
-**URL**: https://lovable.dev/projects/21c80b9c-8668-43be-9be4-2fb40f303a29
+![MoodMuse](https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?q=80&w=1000&auto=format&fit=crop)
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Mood-Based Recommendations**: Select your current mood (happy, sad, chill, angry, excited, or lonely) and get personalized content
+- **AI-Powered Content**: Uses Google's Gemini AI for intelligent, context-aware recommendations
+- **Latest Song Suggestions**: Recommends recent songs (2023-2024) with YouTube links for immediate listening
+- **Varied Recommendations**: Provides different songs with each refresh for endless discovery
+- **Favorites System**: Save your favorite combinations for later access
+- **Responsive Design**: Works beautifully on both desktop and mobile devices
 
-**Use Lovable**
+## Technologies Used
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/21c80b9c-8668-43be-9be4-2fb40f303a29) and start prompting.
+- **Frontend**: React with TypeScript
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **AI Integration**: Google Gemini API
+- **Build Tool**: Vite
+- **State Management**: React Context API
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js (v14 or higher)
+- npm or yarn
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Installation
 
-Follow these steps:
+1. Clone the repository:
+   ```bash
+   git clone <your-repository-url>
+   cd moodmuse-aura-generator
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+3. Set up environment variables:
+   - Copy `.env.example` to `.env.local`
+   - Add your Gemini API key: `VITE_GEMINI_API_KEY=your_actual_api_key_here`
+   - (Optional) Set `VITE_USE_MOCK_DATA=true` to use offline mode
 
-# Step 3: Install the necessary dependencies.
-npm i
+4. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+5. Open your browser to the URL shown in the terminal (usually http://localhost:5173)
+
+## Using MoodMuse
+
+1. **Select Your Mood**: Choose from six different mood options on the mood selector page
+2. **Get Recommendations**: Click "Continue" to receive personalized recommendations
+3. **Listen to Songs**: Click the link icon next to songs to open them on YouTube
+4. **Save Favorites**: Click the heart icon to save combinations you love
+5. **Refresh Content**: Click "New Suggestions" for different recommendations while keeping the same mood
+6. **View Favorites**: Access your saved recommendations on the favorites page
+
+## Gemini API Integration
+
+MoodMuse uses Google's Gemini AI to generate personalized content. When the API key is configured correctly, each request will provide:
+
+- A quote matching your selected mood
+- A positive affirmation to help navigate your emotional state
+- Three recent song recommendations with YouTube links
+
+If no API key is provided or if you set `VITE_USE_MOCK_DATA=true`, the app will fall back to using a local database of mood-based content.
+
+## Project Structure
+
+```
+src/
+├── components/     # Reusable UI components
+├── context/        # React context providers
+├── lib/            # Utility functions and API clients
+├── pages/          # Main application pages
+└── utils/          # Helper functions and tools
 ```
 
-**Edit a file directly in GitHub**
+## Extending MoodMuse
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Adding New Moods
 
-**Use GitHub Codespaces**
+To add a new mood option, update the following files:
+- `src/context/MoodContext.tsx`: Add the new mood type and mock content
+- `src/components/MoodCard.tsx`: Add the new mood icon and color
+- Update the mood selector page to include the new option
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Customizing the AI Prompt
 
-## What technologies are used for this project?
+To modify how the AI generates content, edit the prompt in `src/lib/gemini.ts`.
 
-This project is built with:
+## Acknowledgments
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/21c80b9c-8668-43be-9be4-2fb40f303a29) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- [Google Generative AI](https://ai.google.dev/) for the Gemini API
+- [shadcn/ui](https://ui.shadcn.com/) for the beautiful UI components
+- [Vite](https://vitejs.dev/) for the fast development environment
+- [Tailwind CSS](https://tailwindcss.com/) for styling

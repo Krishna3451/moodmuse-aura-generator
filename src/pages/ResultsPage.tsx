@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMood } from "@/context/MoodContext";
@@ -7,12 +6,19 @@ import AffirmationCard from "@/components/AffirmationCard";
 import SongList from "@/components/SongList";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const ResultsPage: React.FC = () => {
   const navigate = useNavigate();
   const { selectedMood, moodContent, loading, error, favorites, generateContent, addToFavorites, removeFromFavorites } = useMood();
   const [isFavorite, setIsFavorite] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [geminiLoading, setGeminiLoading] = useState(false);
+  
+  // Check if Gemini API is configured and whether to force mock data
+  const isGeminiEnabled = Boolean(import.meta.env.VITE_GEMINI_API_KEY);
+  const useMockData = import.meta.env.VITE_USE_MOCK_DATA === 'true';
+  const usingGemini = isGeminiEnabled && !useMockData;
 
   // Redirect if no mood is selected
   useEffect(() => {
@@ -47,8 +53,12 @@ const ResultsPage: React.FC = () => {
   // Handle refresh for new content with same mood
   const handleRefresh = async () => {
     setRefreshing(true);
+    if (usingGemini) {
+      setGeminiLoading(true);
+    }
     await generateContent();
     setRefreshing(false);
+    setGeminiLoading(false);
   };
 
   if (loading || refreshing) {
@@ -56,9 +66,24 @@ const ResultsPage: React.FC = () => {
       <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-background to-secondary/30">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-medium mb-4">
-            {refreshing ? "Refreshing your inspiration..." : "Finding inspiration for your mood..."}
+            {refreshing 
+              ? usingGemini && geminiLoading
+                ? "Generating AI recommendations..."
+                : "Refreshing your inspiration..."
+              : "Finding inspiration for your mood..."
+            }
           </h2>
-          <LoadingSpinner size="lg" />
+          <div className="flex flex-col items-center">
+            <LoadingSpinner size="lg" />
+            {usingGemini && geminiLoading && (
+              <div className="mt-4 max-w-md">
+                <p className="text-sm text-muted-foreground mb-2">Gemini AI is analyzing your mood to create personalized recommendations.</p>
+                <div className="flex justify-center">
+                  <Badge variant="outline" className="animate-pulse">Powered by Gemini AI</Badge>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -93,8 +118,19 @@ const ResultsPage: React.FC = () => {
     >
       <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-8 animate-fade-in">
-          <div className={`inline-block px-4 py-2 bg-mood-${selectedMood} rounded-full text-sm font-medium mb-4 capitalize`}>
-            {selectedMood} Mood
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            <div className={`inline-block px-4 py-2 bg-mood-${selectedMood} rounded-full text-sm font-medium capitalize`}>
+              {selectedMood} Mood
+            </div>
+            {usingGemini ? (
+              <Badge variant="secondary" className="rounded-full">
+                Powered by Gemini AI
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="rounded-full">
+                Using Mock Data
+              </Badge>
+            )}
           </div>
           <h1 className="text-3xl md:text-4xl font-bold">Your Personalized Inspiration</h1>
         </div>

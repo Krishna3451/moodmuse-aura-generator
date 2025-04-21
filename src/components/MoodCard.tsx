@@ -1,4 +1,3 @@
-
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Smile, Frown, Snowflake, Flame, Zap, UserMinus } from "lucide-react";
@@ -9,9 +8,15 @@ interface MoodCardProps {
   mood: MoodType;
   onClick: (mood: MoodType) => void;
   selected?: boolean;
+  disabled?: boolean;
 }
 
-const MoodCard: React.FC<MoodCardProps> = ({ mood, onClick, selected = false }) => {
+const MoodCard: React.FC<MoodCardProps> = ({ 
+  mood, 
+  onClick, 
+  selected = false, 
+  disabled = false 
+}) => {
   const getMoodIcon = () => {
     switch (mood) {
       case "happy":
@@ -43,14 +48,21 @@ const MoodCard: React.FC<MoodCardProps> = ({ mood, onClick, selected = false }) 
     }
   };
 
+  const handleClick = () => {
+    if (!disabled) {
+      onClick(mood);
+    }
+  };
+
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center p-6 rounded-2xl shadow-md cursor-pointer transition-all duration-300 transform hover:scale-105 animate-fade-in",
+        "flex flex-col items-center justify-center p-6 rounded-2xl shadow-md transition-all duration-300 transform",
         getMoodColor(),
-        selected ? "ring-4 ring-primary scale-105" : ""
+        selected ? "ring-4 ring-primary scale-105" : "",
+        disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:scale-105 animate-fade-in"
       )}
-      onClick={() => onClick(mood)}
+      onClick={handleClick}
     >
       <div className="text-3xl mb-3">{getMoodIcon()}</div>
       <h3 className="font-medium text-lg capitalize">{mood}</h3>
